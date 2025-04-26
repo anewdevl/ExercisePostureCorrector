@@ -121,7 +121,7 @@ function Header() {
 
   const navigationItems = [
     { name: "Workouts", path: "/", icon: <HomeIcon /> },
-    // { name: "Yoga", path: "/yoga", icon: <YogaIcon /> },
+    { name: "Yoga", path: "/yoga", icon: <YogaIcon /> },
     { name: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
     { name: "History", path: "/history", icon: <HistoryIcon /> },
   ]
