@@ -110,7 +110,3 @@ Access the frontend at `http://localhost:3000` (if running in development mode).
 - For Windows users, ensure `pip` and `npm` are added to your system's PATH.
 
 ---
-
-## License
-
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
