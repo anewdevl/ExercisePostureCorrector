@@ -1,0 +1,11 @@
+streamlit==1.22.0
+opencv-python==4.7.0.72
+mediapipe==0.10.5
+numpy==1.24.3
+Pillow==9.5.0
+Flask==2.3.3
+SQLAlchemy==2.0.27
+Werkzeug==2.3.7
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+email-validator==2.1.0.post1

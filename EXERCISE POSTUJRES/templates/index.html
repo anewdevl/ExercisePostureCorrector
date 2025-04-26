@@ -1,0 +1,1126 @@
+{% extends "base.html" %}
+
+{% block title %}AI Fitness Trainer - Home{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #4F46E5;
+        --primary-light: #818CF8;
+        --primary-dark: #3730A3;
+        --secondary-color: #10B981;
+        --accent-color: #F59E0B;
+        --dark-color: #1F2937;
+        --light-color: #F9FAFB;
+        --gray-color: #E5E7EB;
+        --danger-color: #EF4444;
+        --success-color: #10B981;
+    }
+    
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        transition: all 0.3s ease;
+    }
+    
+    .btn {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: var(--gray-color);
+        color: var(--dark-color);
+    }
+    
+    .card {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        overflow: hidden;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        border-bottom: none;
+        padding: 1.25rem 1.5rem;
+    }
+    
+    .feature-card {
+        padding: 2rem;
+        border-radius: 16px;
+        text-align: center;
+        background-color: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+    }
+    
+    .instructions-list {
+        padding-left: 0;
+    }
+    
+    .instruction-step {
+        margin-bottom: 10px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        border-left: 4px solid var(--primary-color);
+        transition: all 0.2s ease;
+    }
+    
+    .instruction-step:hover {
+        background-color: #eef1ff;
+        transform: translateX(5px);
+    }
+    
+    .step-number {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        margin-right: 12px;
+        font-weight: 600;
+    }
+    
+    /* Workout category cards */
+    .workout-category {
+        margin-bottom: 2rem;
+    }
+    
+    .workout-title {
+        color: var(--primary-color);
+        position: relative;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+    }
+    
+    .workout-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background-color: var(--accent-color);
+        border-radius: 2px;
+    }
+    
+    .exercise-card {
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background-color: white;
+        height: 100%;
+        cursor: pointer;
+    }
+    
+    .exercise-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border-color: var(--primary-light);
+    }
+    
+    .exercise-card-img {
+        height: 180px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .exercise-card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+        color: white;
+        padding: 1rem;
+    }
+    
+    .exercise-card-body {
+        padding: 1.5rem;
+    }
+    
+    .exercise-tag {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        background-color: var(--primary-light);
+        color: white;
+    }
+    
+    .badge {
+        padding: 0.5rem 0.75rem;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+    
+    .metrics-item {
+        background-color: white;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .metrics-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    #cameraPlaceholder {
+        border-radius: 16px;
+        background-color: #1a1e2c;
+        transition: all 0.3s ease;
+    }
+    
+    #cameraPlaceholder:hover {
+        transform: scale(1.02);
+    }
+    
+    #videoFeed {
+        border-radius: 16px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    #videoFeed:hover {
+        transform: scale(1.02);
+    }
+    
+    /* Exercise selector dropdown styling */
+    .form-select {
+        border-radius: 10px;
+        padding: 12px 20px;
+        border: 1px solid #d1d5db;
+        background-color: white;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .form-select:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+    
+    /* Smooth animations and transitions */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+</style>
+<div class="container">
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6 fade-in">
+            <h1 class="display-4 fw-bold mb-4">Train Smarter with AI-Powered Feedback</h1>
+            <p class="lead mb-4">
+                Get real-time form correction and tracking for your workouts using computer vision technology. 
+                Our AI analyzes your movements to ensure proper form and maximize results.
+            </p>
+            {% if current_user.is_authenticated %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <button id="startButton" class="btn btn-primary btn-lg px-5 py-3 me-md-2">
+                    <i class="fas fa-play-circle me-2"></i>Start Workout
+                </button>
+                <button id="resetButton" class="btn btn-outline-secondary btn-lg px-4 py-3">
+                    <i class="fas fa-redo me-2"></i>Reset Counter
+                </button>
+            </div>
+            {% else %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 me-md-3 shadow-lg">
+                    <i class="fas fa-user-plus me-2"></i>Sign Up
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary btn-lg px-5 py-3 shadow-sm">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-6 mt-5 mt-lg-0 text-center fade-in" style="animation-delay: 0.2s;">
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Zml0bmVzc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" 
+                 class="img-fluid rounded-4 shadow-lg" alt="Fitness Training" style="border-radius: 24px; transform: rotate(2deg);">
+        </div>
+    </div>
+
+    <div id="mediapipeWarning" class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none; border-radius: 12px;">
+        <strong><i class="fas fa-exclamation-triangle me-2"></i>MediaPipe Not Available!</strong> 
+        The application will run but pose detection will not work properly. Please install MediaPipe for full functionality.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {% if current_user.is_authenticated %}
+    <div class="row mt-5">
+        <div class="col-12 text-center mb-4 fade-in" style="animation-delay: 0.3s;">
+            <h2 class="display-5 fw-bold">Choose Your Workout</h2>
+            <p class="lead text-muted">Select a workout type to begin your fitness journey</p>
+        </div>
+    </div>
+
+    <!-- Home Workout Section -->
+    <div class="workout-category fade-in" style="animation-delay: 0.4s;">
+        <h3 class="workout-title mb-4"><i class="fas fa-home me-2"></i>Home Workout</h3>
+        <p class="text-muted mb-4">No equipment needed - exercises you can do anywhere</p>
+        
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Plank')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1566241142559-40e1dab266c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Plank</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Core</div>
+                        <div class="exercise-tag">Strength</div>
+                        <p class="small text-muted mt-2 mb-0">Strengthens your core, shoulders, arms, and legs</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Push-ups')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1598971639058-fab3c3109a00?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Push-ups</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Upper Body</div>
+                        <div class="exercise-tag">Strength</div>
+                        <p class="small text-muted mt-2 mb-0">Builds chest, shoulder, and arm strength</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Lunges')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1434682881908-b43d0467b798?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Lunges</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Lower Body</div>
+                        <div class="exercise-tag">Balance</div>
+                        <p class="small text-muted mt-2 mb-0">Targets quads, hamstrings, and glutes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Squats')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Squats</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Lower Body</div>
+                        <div class="exercise-tag">Power</div>
+                        <p class="small text-muted mt-2 mb-0">Strengthens legs and builds lower body power</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gym Workout Section -->
+    <div class="workout-category mt-5 fade-in" style="animation-delay: 0.5s;">
+        <h3 class="workout-title mb-4"><i class="fas fa-dumbbell me-2"></i>Gym Workout</h3>
+        <p class="text-muted mb-4">Equipment required - for more intense training</p>
+        
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Bicep Curls')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Bicep Curls</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Arms</div>
+                        <div class="exercise-tag">Isolation</div>
+                        <p class="small text-muted mt-2 mb-0">Targets biceps for sculpted arms</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Deadlifts')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1598268030500-e37b5e421ff6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Deadlifts</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Full Body</div>
+                        <div class="exercise-tag">Compound</div>
+                        <p class="small text-muted mt-2 mb-0">Full body compound movement for overall strength</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Hammer Curls')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Hammer Curls</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Arms</div>
+                        <div class="exercise-tag">Forearms</div>
+                        <p class="small text-muted mt-2 mb-0">Builds biceps and forearm strength</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="exercise-card" onclick="selectExercise('Shoulder Press')">
+                    <div class="exercise-card-img" style="background-image: url('https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                        <div class="exercise-card-overlay">
+                            <h5 class="mb-0">Shoulder Press</h5>
+                        </div>
+                    </div>
+                    <div class="exercise-card-body">
+                        <div class="exercise-tag">Shoulders</div>
+                        <div class="exercise-tag">Press</div>
+                        <p class="small text-muted mt-2 mb-0">Builds shoulder strength and stability</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5 fade-in" style="animation-delay: 0.6s;">
+        <div class="col-12">
+            <div class="card shadow-lg" id="exerciseDetail" style="display: none;">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0" id="exerciseTitle">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span>Exercise Information</span>
+                    </h4>
+                    <button type="button" class="btn btn-sm btn-light" onclick="hideExerciseDetail()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5 class="mb-3">Description</h5>
+                            <p id="exerciseDescription" class="lead"></p>
+                            
+                            <div class="d-grid mt-4">
+                                <button id="startSelectedExercise" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-play-circle me-2"></i>Start Exercise
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="mb-3">How to Perform</h5>
+                            <div id="exerciseInstructions" class="instructions-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="exercise-selector mb-4" style="display: none;">
+        <select id="exerciseSelect" class="form-select form-select-lg mb-3">
+            {% for exercise in exercises %}
+            <option value="{{ exercise }}">{{ exercise }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div id="workoutView" style="display: none;">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="video-container mb-4">
+                    <img id="videoFeed" 
+                         style="width: 100%; height: auto; display: none; border-radius: 15px;"
+                         alt="Camera Feed"
+                         crossorigin="anonymous">
+                    <div id="cameraPlaceholder" class="card bg-dark text-white text-center p-5">
+                        <i class="fas fa-camera fa-5x mb-3 text-muted"></i>
+                        <h3>Camera feed will appear here</h3>
+                        <p class="text-muted">Click "Start Workout" to begin</p>
+                    </div>
+                </div>
+                <div id="errorMessage" class="alert alert-danger" style="display: none; border-radius: 12px;">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Failed to load camera feed. Please check your camera permissions.
+                    <div class="mt-2">
+                        <a href="{{ url_for('camera_test') }}" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-tools me-1"></i>Run Camera Diagnostic
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between mb-4">
+                    <button id="backToExercises" class="btn btn-outline-secondary px-4">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Exercises
+                    </button>
+                    
+                    <div>
+                        <button id="resetButton2" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </button>
+                        <button id="endWorkoutBtn2" class="btn btn-success">
+                            <i class="fas fa-check-circle me-2"></i>End & Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card mb-4 shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Your Metrics</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="metrics-item mb-3">
+                            <h5><i class="fas fa-hashtag me-2"></i>Rep Count</h5>
+                            <h2 id="repCount" class="metrics-value">0</h2>
+                        </div>
+                        <div class="metrics-item mb-3">
+                            <h5><i class="fas fa-running me-2"></i>Current Stage</h5>
+                            <h3 id="currentStage" class="badge bg-secondary px-3 py-2">up</h3>
+                        </div>
+                        <div id="plankMetrics" style="display: none;">
+                            <div class="metrics-item mb-3">
+                                <h5><i class="fas fa-stopwatch me-2"></i>Current Duration</h5>
+                                <h3><span id="currentDuration" class="badge bg-info px-3 py-2">0.0</span>s</h3>
+                            </div>
+                            <div class="metrics-item">
+                                <h5><i class="fas fa-trophy me-2"></i>Best Duration</h5>
+                                <h3><span id="bestDuration" class="badge bg-success px-3 py-2">0.0</span>s</h3>
+                            </div>
+                        </div>
+                        
+                        <div class="metrics-item mt-4">
+                            <h5><i class="fas fa-clipboard-check me-2"></i>Form Feedback</h5>
+                            <div id="formFeedback" class="alert alert-info">
+                                Waiting for movement...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if current_user.is_authenticated %}
+                <div class="card shadow">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Workout Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><i class="fas fa-user me-2"></i><strong>User:</strong> {{ current_user.username }}</p>
+                        <div id="workoutStats">
+                            <p><i class="fas fa-fire me-2"></i><strong>Est. Calories:</strong> <span id="caloriesBurned">0</span></p>
+                            <p><i class="fas fa-clock me-2"></i><strong>Workout Time:</strong> <span id="workoutTime">0:00</span></p>
+                        </div>
+                        <button id="endWorkoutBtn" class="btn btn-success w-100 mt-2">
+                            <i class="fas fa-check-circle me-2"></i>End & Save Workout
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Landing page features for non-authenticated users -->
+    <div class="row mt-5 fade-in" style="animation-delay: 0.3s;">
+        <div class="col-12 text-center mb-4">
+            <h2 class="display-5 fw-bold">Why Choose AI Fitness Trainer?</h2>
+            <p class="lead text-muted">Get the benefits of a personal trainer without the cost</p>
+        </div>
+        <div class="col-md-4 fade-in" style="animation-delay: 0.4s;">
+            <div class="feature-card">
+                <i class="fas fa-eye feature-icon"></i>
+                <h3>Real-time Form Analysis</h3>
+                <p>Our AI watches your form and provides immediate feedback to prevent injury and maximize results.</p>
+            </div>
+        </div>
+        <div class="col-md-4 fade-in" style="animation-delay: 0.5s;">
+            <div class="feature-card">
+                <i class="fas fa-history feature-icon"></i>
+                <h3>Track Your Progress</h3>
+                <p>Keep a record of all your workouts, reps, and improvements over time to stay motivated.</p>
+            </div>
+        </div>
+        <div class="col-md-4 fade-in" style="animation-delay: 0.6s;">
+            <div class="feature-card">
+                <i class="fas fa-dumbbell feature-icon"></i>
+                <h3>Multiple Exercise Types</h3>
+                <p>From squats to planks, we support a variety of exercises to give you a complete workout experience.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-5 fade-in" style="animation-delay: 0.7s;">
+        <h3 class="mb-4">Ready to start your fitness journey?</h3>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 py-3 me-3">
+            <i class="fas fa-user-plus me-2"></i>Sign Up Now
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Exercise data from server
+    const exercisesData = JSON.parse('{{ exercises_data|tojson }}');
+    
+    // Create a map for quick access
+    const exercisesMap = {};
+    exercisesData.forEach(exercise => {
+        exercisesMap[exercise.name] = exercise;
+    });
+    
+    let isRunning = false;
+    let startTime = null;
+    let workoutTimer = null;
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+    let selectedExercise = null;
+    const videoFeed = document.getElementById('videoFeed');
+    const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+    const startButton = document.getElementById('startButton');
+    const exerciseSelect = document.getElementById('exerciseSelect');
+    const resetButton = document.getElementById('resetButton');
+    const resetButton2 = document.getElementById('resetButton2');
+    const plankMetrics = document.getElementById('plankMetrics');
+    const endWorkoutBtn = document.getElementById('endWorkoutBtn');
+    const endWorkoutBtn2 = document.getElementById('endWorkoutBtn2');
+    const mediapipeWarning = document.getElementById('mediapipeWarning');
+    const errorMessage = document.getElementById('errorMessage');
+    const workoutView = document.getElementById('workoutView');
+    const exerciseDetail = document.getElementById('exerciseDetail');
+    const backToExercises = document.getElementById('backToExercises');
+    const startSelectedExercise = document.getElementById('startSelectedExercise');
+    const formFeedback = document.getElementById('formFeedback');
+    
+    // Exercise information elements
+    const exerciseTitle = document.getElementById('exerciseTitle').querySelector('span');
+    const exerciseDescription = document.getElementById('exerciseDescription');
+    const exerciseInstructions = document.getElementById('exerciseInstructions');
+    
+    // Function to select an exercise
+    function selectExercise(exerciseName) {
+        selectedExercise = exerciseName;
+        exerciseSelect.value = exerciseName;
+        
+        // Show the exercise detail card
+        exerciseDetail.style.display = 'block';
+        
+        // Scroll to the card
+        exerciseDetail.scrollIntoView({ behavior: 'smooth' });
+        
+        // Update exercise information
+        updateExerciseInfo(exerciseName);
+    }
+    
+    // Function to hide exercise detail
+    function hideExerciseDetail() {
+        exerciseDetail.style.display = 'none';
+    }
+    
+    // Function to start the selected exercise
+    function startSelectedWorkout() {
+        if (!selectedExercise) return;
+        
+        // Hide exercise cards and detail
+        exerciseDetail.style.display = 'none';
+        
+        // Show workout view
+        workoutView.style.display = 'block';
+        
+        // Scroll to workout view
+        workoutView.scrollIntoView({ behavior: 'smooth' });
+        
+        // Start the workout
+        isRunning = true;
+        startWorkout();
+    }
+    
+    // Function to go back to exercise selection
+    function goBackToExercises() {
+        // Stop the workout if running
+        if (isRunning) {
+            videoFeed.style.display = 'none';
+            cameraPlaceholder.style.display = 'block';
+            videoFeed.src = '';
+            isRunning = false;
+            clearInterval(workoutTimer);
+        }
+        
+        // Hide workout view
+        workoutView.style.display = 'none';
+        
+        // Show exercise detail if an exercise is selected
+        if (selectedExercise) {
+            exerciseDetail.style.display = 'block';
+        }
+        
+        // Reset form feedback
+        formFeedback.textContent = 'Waiting for movement...';
+        formFeedback.className = 'alert alert-info';
+    }
+    
+    // Function to update form feedback based on exercise and detected issues
+    function updateFormFeedback(exercise, posture) {
+        // This is a placeholder - in a real implementation, this would use AI to detect form issues
+        const feedbackMessages = {
+            'Plank': {
+                good: 'Great form! Maintaining a straight line.',
+                issues: ['Hips too high', 'Hips too low', 'Shoulders not aligned']
+            },
+            'Squats': {
+                good: 'Excellent squat depth and knee position!',
+                issues: ['Knees caving in', 'Not deep enough', 'Leaning too far forward']
+            },
+            'Lunges': {
+                good: 'Perfect lunge form!',
+                issues: ['Front knee passing toes', 'Not deep enough', 'Torso leaning too far']
+            },
+            'Push-ups': {
+                good: 'Great push-up form!',
+                issues: ['Elbows flaring out', 'Sagging hips', 'Not going deep enough']
+            },
+            'Bicep Curls': {
+                good: 'Perfect curls! Full range of motion.',
+                issues: ['Using momentum', 'Not fully extending', 'Elbows moving forward']
+            },
+            'Deadlifts': {
+                good: 'Excellent deadlift form!',
+                issues: ['Rounding back', 'Not engaging lats', 'Knees not tracking']
+            },
+            'Hammer Curls': {
+                good: 'Great hammer curl form!',
+                issues: ['Using momentum', 'Not keeping elbows stable', 'Incomplete range']
+            },
+            'Shoulder Press': {
+                good: 'Perfect shoulder press form!',
+                issues: ['Arching back', 'Not fully extending', 'Elbows not aligned']
+            }
+        };
+        
+        // For demo purposes, randomly provide good feedback or issues
+        const isGoodForm = Math.random() > 0.3; // 70% chance of good form
+        
+        if (isGoodForm) {
+            formFeedback.textContent = feedbackMessages[exercise]?.good || 'Good form!';
+            formFeedback.className = 'alert alert-success';
+        } else {
+            const issues = feedbackMessages[exercise]?.issues || [];
+            const randomIssue = issues[Math.floor(Math.random() * issues.length)];
+            formFeedback.textContent = `Form correction needed: ${randomIssue}`;
+            formFeedback.className = 'alert alert-warning';
+        }
+    }
+    
+    // Function to update exercise information
+    function updateExerciseInfo(exerciseName) {
+        const exercise = exercisesMap[exerciseName];
+        if (!exercise) return;
+        
+        // Update title and description
+        exerciseTitle.textContent = exercise.name;
+        exerciseDescription.textContent = exercise.description;
+        
+        // Update instructions
+        exerciseInstructions.innerHTML = '';
+        const steps = exercise.instructions.split('\n');
+        
+        steps.forEach(step => {
+            if (!step.trim()) return;
+            
+            const stepElement = document.createElement('div');
+            stepElement.className = 'instruction-step';
+            
+            // Extract step number if it exists (format: "1. Step text")
+            const stepMatch = step.match(/^(\d+)\.\s*(.*)/);
+            
+            if (stepMatch) {
+                const stepNumber = stepMatch[1];
+                const stepText = stepMatch[2];
+                
+                stepElement.innerHTML = `
+                    <span class="step-number">${stepNumber}</span>
+                    ${stepText}
+                `;
+            } else {
+                stepElement.textContent = step;
+            }
+            
+            exerciseInstructions.appendChild(stepElement);
+        });
+    }
+    
+    // Check if MediaPipe is available
+    function checkMediaPipeAvailability() {
+        fetch('/check_mediapipe')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.available) {
+                    mediapipeWarning.style.display = 'block';
+                }
+            });
+    }
+    
+    // Run checks when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add fade-in animations for a smooth page load
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100);
+        });
+        
+        checkMediaPipeAvailability();
+        checkCameraAvailability();
+        
+        // Set initial exercise information if select exists
+        if (exerciseSelect && exerciseSelect.value) {
+            updateExerciseInfo(exerciseSelect.value);
+        }
+        
+        // Add event listeners for new UI elements
+        if (startSelectedExercise) {
+            startSelectedExercise.addEventListener('click', startSelectedWorkout);
+        }
+        
+        if (backToExercises) {
+            backToExercises.addEventListener('click', goBackToExercises);
+        }
+        
+        if (resetButton2) {
+            resetButton2.addEventListener('click', () => {
+                fetch('/reset_counter');
+                // Reset workout timer
+                startTime = new Date();
+            });
+        }
+        
+        if (endWorkoutBtn2) {
+            endWorkoutBtn2.addEventListener('click', () => {
+                if (isRunning) {
+                    fetch('/end_workout')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Stop the workout
+                            goBackToExercises();
+                            
+                            // Show success message
+                            const alertHTML = `
+                                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                                    <strong>Workout saved!</strong> Great job completing your session.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            `;
+                            document.querySelector('.video-container').insertAdjacentHTML('afterend', alertHTML);
+                        });
+                }
+            });
+        }
+    });
+
+    // Check if camera is available
+    function checkCameraAvailability() {
+        fetch('/check_camera')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.available) {
+                    errorMessage.innerHTML = `
+                        <i class="fas fa-exclamation-triangle me-2"></i>Camera not available: ${data.error}
+                        <ul>
+                            <li>Make sure your camera is connected and working</li>
+                            <li>Check browser permissions for camera access</li>
+                            <li>Close other applications that might be using your camera</li>
+                        </ul>
+                    `;
+                    errorMessage.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                console.error("Error checking camera:", err);
+            });
+    }
+    
+    // Calculate estimated calories based on exercise type and duration
+    function calculateCalories(exercise, reps, duration) {
+        // Very basic estimation
+        if (exercise === 'Plank') {
+            return Math.round(duration * 0.05); // ~3 calories per minute
+        } else {
+            return Math.round(reps * 0.5); // ~0.5 calories per rep
+        }
+    }
+    
+    function updateMetrics() {
+        if (!isRunning) return;
+        
+        fetch('/get_metrics')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('repCount').textContent = data.counter;
+                document.getElementById('currentStage').textContent = data.stage;
+                
+                if (exerciseSelect.value === 'Plank') {
+                    plankMetrics.style.display = 'block';
+                    document.getElementById('currentDuration').textContent = 
+                        data.plank_state.current_duration.toFixed(1);
+                    document.getElementById('bestDuration').textContent = 
+                        data.plank_state.best_duration.toFixed(1);
+                } else {
+                    plankMetrics.style.display = 'none';
+                }
+                
+                // Update form feedback (simulated)
+                if (Math.random() > 0.9) { // 10% chance to update feedback
+                    updateFormFeedback(exerciseSelect.value);
+                }
+                
+                // Update calories if the element exists (for logged in users)
+                const caloriesBurned = document.getElementById('caloriesBurned');
+                if (caloriesBurned) {
+                    const calories = calculateCalories(
+                        exerciseSelect.value, 
+                        data.counter, 
+                        data.plank_state.best_duration
+                    );
+                    caloriesBurned.textContent = calories;
+                }
+            });
+    }
+    
+    function updateWorkoutTime() {
+        if (!startTime || !isRunning) return;
+        
+        const now = new Date();
+        const elapsedMs = now - startTime;
+        const minutes = Math.floor(elapsedMs / 60000);
+        const seconds = Math.floor((elapsedMs % 60000) / 1000);
+        
+        const timeDisplay = document.getElementById('workoutTime');
+        if (timeDisplay) {
+            timeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }
+
+    function handleVideoError() {
+        errorMessage.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>Failed to load camera feed. 
+            <ul>
+                <li>Check if your camera is enabled in browser settings</li>
+                <li>Make sure no other application is using the camera</li>
+                <li>Try refreshing the page</li>
+            </ul>
+        `;
+        errorMessage.style.display = 'block';
+        isRunning = false;
+        startButton.innerHTML = '<i class="fas fa-play-circle me-2"></i>Start Workout';
+        startButton.classList.replace('btn-danger', 'btn-primary');
+        videoFeed.style.display = 'none';
+        cameraPlaceholder.style.display = 'block';
+        clearInterval(workoutTimer);
+        
+        // Try to retry camera connection
+        if (retryCount < MAX_RETRIES) {
+            retryCount++;
+            console.log(`Retrying camera connection (${retryCount}/${MAX_RETRIES})...`);
+            setTimeout(() => {
+                if (confirm(`Camera connection failed. Retry? (Attempt ${retryCount}/${MAX_RETRIES})`)) {
+                    startWorkout();
+                }
+            }, 1000);
+        } else {
+            alert("Maximum retry attempts reached. Please check your camera settings and refresh the page.");
+        }
+    }
+    
+    function startWorkout() {
+        document.getElementById('errorMessage').style.display = 'none';
+        videoFeed.style.display = 'block';
+        cameraPlaceholder.style.display = 'none';
+        
+        // Force reload the video feed
+        videoFeed.src = `/video_feed/${exerciseSelect.value}?nocache=${Date.now()}`;
+        
+        if (startButton) {
+            startButton.innerHTML = '<i class="fas fa-stop-circle me-2"></i>Stop Workout';
+            startButton.classList.replace('btn-primary', 'btn-danger');
+        }
+        
+        // Start workout timer
+        startTime = new Date();
+        workoutTimer = setInterval(updateWorkoutTime, 1000);
+        
+        // Add error handling for video feed
+        videoFeed.onerror = handleVideoError;
+        
+        // Add a check to see if the camera stream is actually working 
+        setTimeout(() => {
+            if (videoFeed.naturalWidth === 0) {
+                handleVideoError();
+            }
+        }, 3000);
+    }
+
+    if (startButton) {
+        startButton.addEventListener('click', () => {
+            isRunning = !isRunning;
+            if (isRunning) {
+                startWorkout();
+            } else {
+                videoFeed.style.display = 'none';
+                cameraPlaceholder.style.display = 'block';
+                videoFeed.src = '';
+                startButton.innerHTML = '<i class="fas fa-play-circle me-2"></i>Start Workout';
+                startButton.classList.replace('btn-danger', 'btn-primary');
+                clearInterval(workoutTimer);
+            }
+        });
+    }
+
+    if (resetButton) {
+        resetButton.addEventListener('click', () => {
+            fetch('/reset_counter');
+            // Reset workout timer
+            startTime = new Date();
+        });
+    }
+
+    if (exerciseSelect) {
+        exerciseSelect.addEventListener('change', () => {
+            if (isRunning) {
+                videoFeed.src = `/video_feed/${exerciseSelect.value}`;
+            }
+            if (exerciseSelect.value === 'Plank') {
+                plankMetrics.style.display = 'block';
+            } else {
+                plankMetrics.style.display = 'none';
+            }
+            
+            // Update exercise information
+            updateExerciseInfo(exerciseSelect.value);
+        });
+    }
+    
+    // End and save workout
+    if (endWorkoutBtn) {
+        endWorkoutBtn.addEventListener('click', () => {
+            if (isRunning) {
+                fetch('/end_workout')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Stop the workout
+                        isRunning = false;
+                        videoFeed.style.display = 'none';
+                        cameraPlaceholder.style.display = 'block';
+                        videoFeed.src = '';
+                        startButton.innerHTML = '<i class="fas fa-play-circle me-2"></i>Start Workout';
+                        startButton.classList.replace('btn-danger', 'btn-primary');
+                        clearInterval(workoutTimer);
+                        
+                        // Show success message
+                        const alertHTML = `
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                                <strong>Workout saved!</strong> Great job completing your session.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        `;
+                        document.querySelector('.video-container').insertAdjacentHTML('afterend', alertHTML);
+                    });
+            }
+        });
+    }
+
+    // Add mouse cursor effects
+    document.querySelectorAll('.exercise-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            card.style.transform = `
+                perspective(800px)
+                rotateY(${(x - rect.width / 2) / 20}deg)
+                rotateX(${-(y - rect.height / 2) / 20}deg)
+                translateY(-5px)
+            `;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 500);
+        });
+    });
+
+    setInterval(updateMetrics, 1000);
+</script>
+{% endblock %}

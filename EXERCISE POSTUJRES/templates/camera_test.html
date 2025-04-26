@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Camera Test - AI Fitness Trainer{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold"><i class="fas fa-camera me-3"></i>Camera Diagnostic Test</h1>
+            <p class="lead text-muted">Testing your camera to help troubleshoot issues</p>
+            
+            <div class="alert {{ 'alert-success' if camera_info.success else 'alert-danger' }}" role="alert">
+                <h4 class="alert-heading">
+                    {% if camera_info.success %}
+                        <i class="fas fa-check-circle me-2"></i>Camera is working!
+                    {% else %}
+                        <i class="fas fa-exclamation-triangle me-2"></i>Camera issues detected!
+                    {% endif %}
+                </h4>
+                <p>
+                    {% if camera_info.success %}
+                        Your camera is functioning correctly and should work with the application.
+                    {% else %}
+                        We've detected issues with your camera that need to be resolved.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diagnostic Cards -->
+    <div class="row mb-5">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Camera Details</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Camera initialized
+                            {% if camera_info.initialized %}
+                                <span class="badge bg-success rounded-pill"><i class="fas fa-check"></i></span>
+                            {% else %}
+                                <span class="badge bg-danger rounded-pill"><i class="fas fa-times"></i></span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Camera opened successfully
+                            {% if camera_info.opened %}
+                                <span class="badge bg-success rounded-pill"><i class="fas fa-check"></i></span>
+                            {% else %}
+                                <span class="badge bg-danger rounded-pill"><i class="fas fa-times"></i></span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Frame read successful
+                            {% if camera_info.frame_read %}
+                                <span class="badge bg-success rounded-pill"><i class="fas fa-check"></i></span>
+                            {% else %}
+                                <span class="badge bg-danger rounded-pill"><i class="fas fa-times"></i></span>
+                            {% endif %}
+                        </li>
+                        {% if camera_info.frame_read %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Frame encoded successfully
+                            {% if camera_info.encode_success %}
+                                <span class="badge bg-success rounded-pill"><i class="fas fa-check"></i></span>
+                            {% else %}
+                                <span class="badge bg-danger rounded-pill"><i class="fas fa-times"></i></span>
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    {% if camera_info.error %}
+                    <div class="alert alert-danger mt-3">
+                        <strong>Error:</strong> {{ camera_info.error }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-cogs me-2"></i>Technical Information</h4>
+                </div>
+                <div class="card-body">
+                    {% if camera_info.frame_read %}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Frame width:</strong> {{ camera_info.frame_width }} px
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Frame height:</strong> {{ camera_info.frame_height }} px
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Frame rate:</strong> {{ camera_info.frame_fps }} FPS
+                        </li>
+                    </ul>
+                    {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-circle me-2"></i>Frame data unavailable
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Troubleshooting Section -->
+    {% if not camera_info.success %}
+    <div class="card mb-5">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="fas fa-tools me-2"></i>Troubleshooting Steps</h4>
+        </div>
+        <div class="card-body">
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item">
+                    <strong>Check browser permissions:</strong> Make sure your browser has permission to access your camera
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            For Chrome: Click the padlock icon in the address bar, and ensure camera access is allowed for this site
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <strong>Close other applications:</strong> Make sure no other applications (like Zoom, Teams, or other browser tabs) are using your camera
+                </li>
+                <li class="list-group-item">
+                    <strong>Check Windows settings:</strong> Ensure your camera is enabled in Windows privacy settings
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            Go to Settings > Privacy > Camera > Make sure "Allow apps to access your camera" is turned on
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <strong>Update drivers:</strong> Try updating your camera drivers
+                </li>
+                <li class="list-group-item">
+                    <strong>Try another browser:</strong> Some browsers handle camera permissions better than others
+                </li>
+                <li class="list-group-item">
+                    <strong>Restart your computer:</strong> Sometimes a simple restart can resolve camera issues
+                </li>
+            </ol>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="d-grid gap-2 d-md-flex mb-5">
+        <a href="{{ url_for('camera_test') }}" class="btn btn-primary">
+            <i class="fas fa-sync me-2"></i>Run Test Again
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-home me-2"></i>Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %} 
