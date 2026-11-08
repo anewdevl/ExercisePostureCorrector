@@ -1,0 +1,12 @@
+Flask>=3.1,<4
+Flask-SQLAlchemy>=3.1,<4
+Flask-Cors>=6,<7
+requests>=2.32,<3
+python-dotenv>=1.2,<2
+numpy>=1.26,<2
+opencv-contrib-python==4.11.0.86
+# Existing processors use mp.solutions, removed in newer MediaPipe releases.
+mediapipe==0.10.21
+# Bound MediaPipe's unused JAX dependency to the tested NumPy 1.x combination.
+jax==0.7.1
+jaxlib==0.7.1

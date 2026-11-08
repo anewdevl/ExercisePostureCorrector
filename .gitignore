@@ -1,1 +1,14 @@
+.venv/
+venv/
+fitness_env/
+__pycache__/
+*.py[cod]
+*.db
+*.db-*
+.env
 node_modules/
+dist/
+build/
+test-results/
+playwright-report/
+instance/

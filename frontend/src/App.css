@@ -1,0 +1,76 @@
+/* Application screens are scoped so the original landing-page design stays independent. */
+.app-header { background: #0c0c0cf2; height: 100px; }
+.env-path { overflow-wrap: anywhere; padding: 12px; border: 1px solid #71614a; border-radius: 6px; }
+.main-hero { flex-wrap: wrap; gap: 16px; }
+.main-hero .btn { margin-right: 0; }
+.main-hero .camera-cta { background: transparent; border-color: var(--main-color); }
+.hero .hero-text h1 { font-size: clamp(2.8rem, 4.6vw, 5rem); line-height: 1.08; max-width: 660px; }
+.hero .hero-chat { flex-basis: 100%; color: var(--main-color); font-size: 15px; line-height: 1.6; }
+.hero-cutout { min-width: 0; width: 100%; align-self: end; display: flex; justify-content: center; }
+.hero-cutout img { display: block; width: 100%; max-height: 80vh; object-fit: contain; object-position: bottom; mask-image: linear-gradient(to bottom, black 90%, transparent 100%); }
+@media (max-width: 920px) { .hero-cutout { max-width: 460px; justify-self: center; } .hero-cutout img { max-height: 620px; } }
+.app-header .logo { flex-shrink: 0; width: 100px; }
+.app-header .logo img { display: block; max-height: 70px; object-fit: contain; }
+#menu-icon { background: transparent; border: 0; color: white; }
+.navlist a.active { color: var(--main-color); }
+.app-page { width: min(1200px, 92%); margin: 160px auto 60px; line-height: 1.6; }
+.app-page h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 12px; }
+.app-page h2, .app-page h3 { margin-bottom: 14px; }
+.page-heading { display: flex; gap: 24px; justify-content: space-between; align-items: center; margin-bottom: 36px; }
+.eyebrow { letter-spacing: .15em; color: var(--main-color); font-size: .75rem; }
+.app-page .panel { padding: 24px; border: 1px solid #39332b; border-radius: 14px; background: #191817; margin-bottom: 20px; }
+.app-page .muted, .app-page .page-heading p { color: #c4bfb8; }
+.app-page input, .app-page select { display: block; width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #71614a; border-radius: 6px; color: white; background: #0c0c0c; font: inherit; }
+.app-page label { display: block; }
+.app-page .form-group { display: block; margin-bottom: 18px; }
+.app-page button { cursor: pointer; padding: 10px 16px; border-radius: 6px; border: 1px solid #71614a; color: white; background: #29241e; font: inherit; }
+.app-page button.btn { background: var(--main-color); color: #101010; margin: 0; }
+.app-page button:hover { border-color: #d0ae7f; }
+.app-page button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.app-page fieldset { border: 0; min-width: 0; }
+.app-page .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+.app-page .error { background: #3c2121; color: #ffd7d7; padding: 14px; border: 1px solid #8b5050; border-radius: 6px; margin: 16px 0; }
+.workout-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.exercise-summary { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid #39332b; }
+.exercise-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 12px; align-items: end; margin-bottom: 18px; }
+.generate-page { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr); gap: 32px; }
+.workout-table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+.workout-table th, .workout-table td { text-align: left; padding: 10px; border-bottom: 1px solid #494137; overflow-wrap: anywhere; }
+.workout-plan > button { margin-bottom: 24px !important; }
+.chat-messages { max-height: 55vh; overflow-y: auto; }
+.message { padding: 16px; margin-bottom: 16px; border-radius: 8px; background: #24211d; overflow-wrap: anywhere; }
+.message.user { margin-left: 10%; background: #393024; }
+.message.assistant { margin-right: 10%; }
+.message ul, .message ol { padding-left: 24px; }
+.message li { list-style: initial; }
+.message pre { overflow-x: auto; }
+.chat-input { display: flex; gap: 12px; margin-top: 20px; }
+.provider-notice { margin: 0 0 24px; color: #c4bfb8; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+:focus-visible { outline: 3px solid #e6bf88; outline-offset: 4px; }
+@media (max-width: 800px) {
+  .app-page { margin-top: 130px; }
+  .generate-page { grid-template-columns: 1fr; }
+  .page-heading { flex-direction: column; align-items: start; }
+  .exercise-row { grid-template-columns: 1fr 1fr; }
+  .exercise-row label:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 570px) {
+  .hero { min-height: 100svh; height: auto; }
+  .hero > img { width: 100%; max-width: 420px; justify-self: center; }
+  .main-hero { flex-wrap: wrap; gap: 20px; }
+  .main-hero .btn { white-space: nowrap; margin-right: 0; }
+  .main-hero .price { padding-left: 0; }
+  .hero-text { padding-top: 150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  [data-aos] { opacity: 1 !important; transform: none !important; }
+}
+@media print {
+  header, .no-print, .form-section, .app-page > h1, .result-section > h2 { display: none !important; }
+  body, .app-page .panel { background: white; color: black; }
+  .app-page { margin: 0; width: 100%; }
+  .generate-page { display: block; }
+  .print-plan article { break-inside: avoid; border: 0; padding: 0; }
+}
