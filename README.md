@@ -1,6 +1,6 @@
-# AIWorkout
+# Exercise Posture Corrector
 
-AIWorkout helps you plan workouts, organize routines, and track selected exercises with your camera. Choose Gemini, OpenAI, Anthropic, DeepSeek, or a local Ollama model for workout planning and fitness chat.
+Exercise Posture Corrector helps you plan workouts, organize routines, and track selected exercises with your camera. Choose Gemini, OpenAI, Anthropic, DeepSeek, or a local Ollama model for workout planning and fitness chat.
 
 ## Features
 
