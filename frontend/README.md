@@ -1,10 +1,7 @@
 # Frontend
 
-Merged Vite / React frontend. See ../README.md for the application setup.
+Vite and React frontend for AIWorkout.
 
-npm run dev uses port 5175 and forwards /api to port 5002.
-npm run build produces the frontend/dist directory served by Flask.
-npm run lint and npm run test:e2e run static and browser checks.
+`npm run dev` starts the development server on port 5175 and forwards `/api` requests to the Flask server on port 5002. `npm run build` produces the assets served by Flask. `npm run lint` and `npm run test:e2e` run the code and browser checks.
 
-Home.jsx, the landing artwork, and css/styles.css are preserved from AIWorkout.
-Training.css scopes tracker styles to prevent them from changing the homepage.
+The home page and landing artwork are in `src/Home.jsx` and `src/img/`. Training styles are scoped in `src/Training.css`.
